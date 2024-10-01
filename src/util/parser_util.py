@@ -26,7 +26,7 @@ def _get_ep_content_from_link(url:str):
         article_text += element.get_text(separator=' ', strip=True) + ' '
 
     article_text = article_text.replace('\xa0', ' ')
-    citation_pattern = r'\[\d+\]|\(\d+\)'
+    citation_pattern = r'\[\s*\d+\s*\]'
     clean_text = re.sub(citation_pattern, '', article_text)
     return clean_text
 
