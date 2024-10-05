@@ -6,32 +6,76 @@ import pandas as pd
 from tqdm import tqdm
 
 def _get_ep_content_from_link(url:str):
+    """
+    Get the content of a given episode link
+
+    Parameters
+    ----------
+    url : str
+        The link to the episode. The link can be from either wikipedia or fandom.
+
+    Returns
+    -------
+    str
+        The content of the episode as a string.
+
+    Notes
+    -----
+    The function will then parse the content of the episode. If the link is from
+    fandom, the function will remove all the text in the sections of "Gallery",
+    "References", and "External Links". If the link is from wikipedia, the function
+    will remove all the text in the sections after the section of "Production".
+    """
     if not url:
         return ""
+    
     response = None
-
     while not response:
         try:
             response = requests.get(url)
         except Exception:
             time.sleep(5)
+            response = requests.get(url)
 
     soup = BeautifulSoup(response.content, 'html.parser')
     main_content = soup.find('div', class_='mw-parser-output')
 
     article_text = ""
-    for element in main_content.find_all(['p', 'h2', 'h3']):
-        if element.name == 'h2' and 'Production' in element.get_text():
-            break
-        article_text += element.get_text(separator=' ', strip=True) + ' '
+    if "fandom" in url:
+        for element in main_content.find_all(['p', 'li', 'h2', 'h3']):
+            if element.name == 'h2' and ('Gallery' in element.get_text() or 'References' in element.get_text() or 'External Links' in element.get_text()):
+                continue
+            article_text += element.get_text(separator=' ', strip=True) + ' '
+
+    elif "wikipedia" in url:
+        for element in main_content.find_all(['p', 'h2', 'h3']):
+            if element.name == 'h2' and 'Production' in element.get_text():
+                break
+            article_text += element.get_text(separator=' ', strip=True) + ' '
 
     article_text = article_text.replace('\xa0', ' ')
+    article_text = article_text.replace('\u200b', ' ')
     citation_pattern = r'\[\s*\d+\s*\]'
     clean_text = re.sub(citation_pattern, '', article_text)
     return clean_text
 
+
 def get_all_episodes_df(url:str):
     # Fetch the webpage content
+    """
+    Get all the episodes data from a given url as a pandas DataFrame.
+
+    Parameters
+    ----------
+    url : str
+        The url to the webpage containing the episodes. The url can be from either
+        wikipedia or fandom.
+
+    Returns
+    -------
+    pd.DataFrame
+        A pandas DataFrame containing the episodes.
+    """
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
 
@@ -76,6 +120,7 @@ def get_all_episodes_df(url:str):
                     episode_list.append({"season": season, "title": title, "link": href, "airdate": airdate, "viewership(mil)": viewership})
                 except:
                     continue
+
         tqdm.pandas(desc="Extracting individual episode data from links")
         df = pd.DataFrame(episode_list)
         df["content"] = df["link"].progress_apply(_get_ep_content_from_link)
