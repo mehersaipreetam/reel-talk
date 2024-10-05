@@ -1,9 +1,11 @@
-import requests
-from bs4 import BeautifulSoup
 import re
 import time
+
 import pandas as pd
+import requests
+from bs4 import BeautifulSoup
 from tqdm import tqdm
+
 
 def _get_ep_content_from_link(url:str):
     """
@@ -119,4 +121,5 @@ def get_all_episodes_df(url:str):
     df = pd.DataFrame(episode_list)
     df["content"] = df["link"].progress_apply(_get_ep_content_from_link)
     df = df.drop("link", axis=1)
+    df["episode_num"] = df.index + 1
     return df

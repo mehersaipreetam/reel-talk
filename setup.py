@@ -1,5 +1,6 @@
 from setuptools import find_packages, setup
 
+
 # Function to parse requirements.txt
 def parse_requirements(filename):
     with open(filename, 'r') as file:
