@@ -1,9 +1,11 @@
-import requests
-from bs4 import BeautifulSoup
 import re
 import time
+
 import pandas as pd
+import requests
+from bs4 import BeautifulSoup
 from tqdm import tqdm
+
 
 def _get_ep_content_from_link(url:str):
     """
@@ -54,7 +56,7 @@ def _get_ep_content_from_link(url:str):
             article_text += element.get_text(separator=' ', strip=True) + ' '
 
     article_text = article_text.replace('\xa0', ' ')
-    article_text = article_text.replace('\u200b', ' ')
+    article_text = article_text.replace('\u200b', '')
     citation_pattern = r'\[\s*\d+\s*\]'
     clean_text = re.sub(citation_pattern, '', article_text)
     return clean_text
@@ -77,11 +79,10 @@ def get_all_episodes_df(url:str):
     """
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
+    episode_list = []
 
     if "fandom" in url:
         seasons = soup.find_all('div', class_='mw-parser-output')[0].find_all('h3')
-        episode_list = []
-        
         for season in seasons:
             episodes = season.find_next("tbody").find_all('tr')[1:]
             for episode in episodes:
@@ -92,13 +93,9 @@ def get_all_episodes_df(url:str):
                     'title': title,
                     'link': episode_url
                 })
-        df = pd.DataFrame(episode_list)
-        return df
 
     elif "wikipedia" in url:
         episode_tables = soup.find_all('table', class_='wikitable plainrowheaders wikiepisodetable')
-        episode_list = []
-
         for season, table in tqdm(enumerate(episode_tables, 1), "Extracting each season table"):
             rows = table.find_all('tr')[1:]
             for row in rows:
@@ -120,8 +117,9 @@ def get_all_episodes_df(url:str):
                 except:
                     continue
 
-        tqdm.pandas(desc="Extracting individual episode data from links")
-        df = pd.DataFrame(episode_list)
-        df["content"] = df["link"].progress_apply(_get_ep_content_from_link)
-        df = df.drop("link", axis=1)
-        return df
+    tqdm.pandas(desc="Extracting individual episode data from links")
+    df = pd.DataFrame(episode_list)
+    df["content"] = df["link"].progress_apply(_get_ep_content_from_link)
+    df = df.drop("link", axis=1)
+    df["episode_num"] = df.index + 1
+    return df
