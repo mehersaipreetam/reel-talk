@@ -61,7 +61,6 @@ def _get_ep_content_from_link(url:str):
 
 
 def get_all_episodes_df(url:str):
-    # Fetch the webpage content
     """
     Get all the episodes data from a given url as a pandas DataFrame.
 
