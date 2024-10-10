@@ -2,9 +2,9 @@ beautifulsoup4==4.12.3
 requests==2.32.3
 pandas==2.2.3
 tqdm==4.66.5
-langchain==0.3.2
-langchain-core==0.3.1
-langchain-chroma==0.1.4
+langchain
+langchain-core
+langchain-chroma
 langchain-huggingface==0.1.0
 sentence-transformers==3.1.1
 langchain_groq==0.2.0
