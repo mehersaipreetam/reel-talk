@@ -1,7 +1,7 @@
 import logging
 from langchain_groq import ChatGroq
 
-from config import LOGGERNAME
+from config import logger
 
 class LLM:
     def __init__(self) -> None:
@@ -30,14 +30,12 @@ class LLM:
         )
         return llm
 
-    def invoke_llm(self, llm, prompt):
+    def invoke_llm(self, prompt):
         """
         Invokes the given language model with the given prompt, and returns the model's response.
 
         Parameters
         ----------
-        llm : ChatGroq
-            An instance of the ChatGroq LLM to be invoked.
         prompt : str
             The string prompt to be passed to the language model.
 
@@ -46,8 +44,7 @@ class LLM:
         str
             The output of the language model.
         """
-        logger = logging.get_logger(LOGGERNAME)
-        logger.info("Invoking LLM with prompt: %s", prompt)
-        response = llm.invoke(prompt)
-        logger.info("LLM response: %s", response)
+        logger.info(f"Invoking LLM with prompt: {prompt}")
+        response = self.llm.invoke(prompt)
+        logger.info(f"LLM response: {response}")
         return response
