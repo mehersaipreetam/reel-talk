@@ -5,7 +5,7 @@ from src.util.vector_store_util import add_to_vector_store
 
 
 class ChromaDB:
-    def __init__(self, collection_name, embedding_function_name, persist_directory):
+    def __init__(self, collection_name, embedding_function_name="sentence-transformers/all-MiniLM-L6-v2", persist_directory="../data/chroma_langchain_db"):
         """
         Parameters
         ----------
@@ -27,10 +27,10 @@ class ChromaDB:
             The Chroma vector store object that will be used to store the
             embedding vectors.
         """
-        self.embeddings = HuggingFaceEmbeddings(model_name=embedding_function_name)
+        embeddings = HuggingFaceEmbeddings(model_name=embedding_function_name)
         self.vector_store = Chroma(
             collection_name=collection_name,
-            embedding_function=self.embeddings,
+            embedding_function=embeddings,
             persist_directory=persist_directory,
         )
     
