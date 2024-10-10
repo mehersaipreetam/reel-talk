@@ -3,6 +3,19 @@ from setuptools import find_packages, setup
 
 # Function to parse requirements.txt
 def parse_requirements(filename):
+    """
+    Parse a requirements.txt file and return the list of requirements as a list of strings
+    
+    Parameters
+    ----------
+    filename : str
+        The path to the requirements.txt file to be parsed
+    
+    Returns
+    -------
+    List[str]
+        List of requirements as strings
+    """
     with open(filename, 'r') as file:
         return file.read().splitlines()
 
