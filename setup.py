@@ -9,8 +9,8 @@ def parse_requirements(filename):
 setup(
     name="reel-talk",
     version="0.1.0",
-    packages=find_packages(where="src"),
-    package_dir={"": "src"},
+    packages=find_packages(where="."),
+    package_dir={"": "."},
     install_requires=parse_requirements('requirements.txt'),
     entry_points={
         "console_scripts": [

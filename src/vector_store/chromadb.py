@@ -1,7 +1,7 @@
 from langchain_chroma import Chroma
 from langchain_huggingface import HuggingFaceEmbeddings
 
-from util.vector_store_util import add_to_vector_store
+from src.util.vector_store_util import add_to_vector_store
 
 
 class ChromaDB:
