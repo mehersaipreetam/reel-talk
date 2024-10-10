@@ -1,4 +1,3 @@
-import logging
 from langchain_groq import ChatGroq
 
 from config import logger
