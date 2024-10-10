@@ -1,7 +1,6 @@
 from setuptools import find_packages, setup
 
 
-# Function to parse requirements.txt
 def parse_requirements(filename):
     """
     Parse a requirements.txt file and return the list of requirements as a list of strings
