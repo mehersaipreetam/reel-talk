@@ -5,7 +5,12 @@ from src.util.vector_store_util import add_to_vector_store
 
 
 class ChromaDB:
-    def __init__(self, collection_name, embedding_function_name="sentence-transformers/all-MiniLM-L6-v2", persist_directory="../data/chroma_langchain_db"):
+    def __init__(
+        self,
+        collection_name,
+        embedding_function_name="sentence-transformers/all-MiniLM-L6-v2",
+        persist_directory="../data/chroma_langchain_db",
+    ):
         """
         Parameters
         ----------
@@ -33,7 +38,7 @@ class ChromaDB:
             embedding_function=embeddings,
             persist_directory=persist_directory,
         )
-    
+
     def add_episode_df_to_vector_store(self, episode_df):
         """
         Add a pandas DataFrame to the vector store.

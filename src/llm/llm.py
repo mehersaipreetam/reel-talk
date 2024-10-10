@@ -2,10 +2,11 @@ from langchain_groq import ChatGroq
 
 from config import logger
 
+
 class LLM:
     def __init__(self) -> None:
         self.llm = self.get_llm()
-    
+
     def get_llm(self, model="llama3-70b-8192"):
         """
         Initializes and returns an instance of the ChatGroq LLM with specified configurations. Support for other LLMs can be added as well
