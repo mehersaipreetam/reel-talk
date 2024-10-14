@@ -5,6 +5,9 @@ from config import logger
 
 class LLM:
     def __init__(self) -> None:
+        """
+        Initializes an instance of the LLM class by calling the get_llm method, which instantiates the specified language model.
+        """
         self.llm = self.get_llm()
 
     def get_llm(self, model="llama3-70b-8192"):
@@ -28,6 +31,7 @@ class LLM:
             timeout=None,
             max_retries=2,
         )
+        logger.info(f"LLM created: {llm}")
         return llm
 
     def invoke_llm(self, prompt):
