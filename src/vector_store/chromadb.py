@@ -12,6 +12,8 @@ class ChromaDB:
         persist_directory="../data/chroma_langchain_db",
     ):
         """
+        Initializes an instance of ChromaDB class.
+        
         Parameters
         ----------
         collection_name : str
