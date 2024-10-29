@@ -57,8 +57,8 @@ if __name__ == "__main__":
         )
         chromadb_store.add_episode_df_to_vector_store(episode_df)
 
-    client = chromadb.PersistentClient(path="../data/chroma_langchain_db")
-    chroma_collection = client.get_or_create_collection(name="how_i_met_your_mother")
+    client = chromadb.PersistentClient(path=args.db_path)
+    chroma_collection = client.get_or_create_collection(name=args.collection_name)
 
     vanilla_rag = VanillaRAG()
     retrieved_documents = vanilla_rag.vanilla_rag(
