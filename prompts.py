@@ -12,8 +12,9 @@ User Question: {query}
 Instructions:
 
 Answer Generation:
+- Make the responses mimic the style and tone of the characters referenced in the documents.
 - Respond to the user's question using ONLY the information contained in the retrieved documents. Do not rely on outside knowledge.
-- Your response should be clear, cohesive, and detailed when necessary to fully address the query.
+- Your response should be clear, cohesive, and detailed only when necessary to fully address the query.
 - For direct or straightforward questions, avoid unnecessary details and provide a concise, to-the-point response.
 
 Use of Metadata:
